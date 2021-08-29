@@ -19,6 +19,6 @@ replace(){
 # replace app.py
 # replace helpers.py
 replace main_loop.py
-replace pump_control.py
 replace pins.py
+replace pump.py
 picocom -b 115200 /dev/ttyUSB0

@@ -1,8 +1,8 @@
 from machine import Pin
 
 PINS ={
-    'pump_full': 21
-    'pump_empty' : 23
+    'pump_full': 21,
+    'pump_empty' : 23,
     'pump_power' : 22,
     'pump_control': 2
 }

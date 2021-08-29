@@ -1,6 +1,6 @@
-from pins import pin_empty_pump, pin_full_pump, pin_pump_power
+from pins import pin_empty_pump, pin_full_pump, pin_pump_control
 from time import sleep
-from helpers import clock
+from helpers import clock, dbg
 
 ACTIVATION_TIME = 10
 
@@ -16,7 +16,7 @@ class PlumbingSystem:
         return self.pump.off()
 
     def control_water_level(self):
-        if self.tank.is_controlled():
+        if self.tank.is_controled():
            pass
         elif self.tank.is_low():
             dbg('LOW! pump -> on.')
@@ -34,7 +34,7 @@ class Tank:
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
-            cls.instance = super(Tank, csl).__new__(cls)
+            cls.instance = super(Tank, cls).__new__(cls)
         return cls.instance
 
     def is_full(self):
@@ -64,13 +64,14 @@ class Pump:
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
-            cls.instance = super(Pump, csl).__new__(cls)
+            cls.instance = super(Pump, cls).__new__(cls)
         return cls.instance
 
     def on(self):
         if not self.is_on:
             self.is_on = True
             self.command()
+            sleep(ACTIVATION_TIME)
         return True
 
     def off(self):
