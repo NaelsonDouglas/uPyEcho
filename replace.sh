@@ -17,8 +17,9 @@ replace(){
 # replace boot.py
 # replace main.py
 # replace app.py
-# replace helpers.py
 replace main_loop.py
-replace pins.py
 replace pump.py
+replace devices.py
+replace helpers.py
+replace pins.py
 picocom -b 115200 /dev/ttyUSB0

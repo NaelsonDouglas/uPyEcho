@@ -46,7 +46,7 @@ class Poller:
 
         for one_ready in ready:
             target = self.targets.get(one_ready[0].fileno(), None)
-            dbg("Targets %s" % str(self.targets.keys()))
+            #dbg("Targets %s" % str(self.targets.keys()))
             if target:
                 # dbg("get socket with fileno: %s" % str(one_ready[0].fileno()) +  " len: %s" % len(one_ready) + " selected: %s " % str(target.fileno()) )
                 # update time

@@ -1,16 +1,37 @@
 from pins import pin_empty_pump, pin_full_pump, pin_pump_control
-from time import sleep
+import time
 from helpers import clock, dbg
 
-ACTIVATION_TIME = 10
-
+MINUTE_MS = 60000
+COOLDOWN = 1 * MINUTE_MS
 class PlumbingSystem:
     def __init__(self):
         self.tank  = Tank()
         self.pump  = Pump()
+        self.last_activation = time.ticks_ms() - MINUTE_MS
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(PlumbingSystem, cls).__new__(cls)
+        return cls.instance
 
     def on(self):
-        return self.pump.on()
+        now = time.ticks_ms()
+        time_diff = time.ticks_diff(now, self.last_activation)
+        dbg('TIME_DIFF %s'% time_diff)
+        if  time_diff >= COOLDOWN:
+            self.last_activation = now
+            self.pump.on()
+            dbg('LOW! pump -> on.')
+        else:
+            dbg('In Cooldown!')
+        return True
+
+    def pump_state(self):
+        state = 'desligada'
+        if self.pump.is_on:
+            state = 'ligada'
+        return state
 
     def off(self):
         return self.pump.off()
@@ -19,14 +40,14 @@ class PlumbingSystem:
         if self.tank.is_controled():
            pass
         elif self.tank.is_low():
-            dbg('LOW! pump -> on.')
             self.on()
         elif self.tank.is_overflown():
             dbg('OVERFLOW! pump -> off.')
             self.off()
         elif self.tank.is_invalid_state():
+            dbg('INVALID_STATE')
+            self.off()
             pass #TODO implement Alarm
-
 
 class Tank:
     def __init__(self):
@@ -60,7 +81,7 @@ class Pump:
     def __init__(self):
         self.control_pin = pin_pump_control
         self.is_on = False
-        self.last_activation = clock.now()
+        self.last_activation = time.ticks_ms() - MINUTE_MS
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -71,15 +92,15 @@ class Pump:
         if not self.is_on:
             self.is_on = True
             self.command()
-            sleep(ACTIVATION_TIME)
         return True
 
     def off(self):
-        self.is_on = False
-        self.command()
+        if self.is_on:
+            self.is_on = False
+            self.command()
         return True
 
     def command(self):
         self.control_pin.on()
-        sleep(0.25)
+        time.sleep(0.35)
         self.control_pin.off()

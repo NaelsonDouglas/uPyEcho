@@ -1,5 +1,6 @@
-from rest_api_handler import RestApiHandler
-from led_handler import LedHandler
+#from rest_api_handler import RestApiHandler
+#from led_handler import LedHandler
+from pump import Pump
 
 '''
     Each entry is a list with the following elements:
@@ -17,15 +18,20 @@ from led_handler import LedHandler
 '''
 devices = [
     {
-        "description": "led",
-        "port": 12340,
-        "handler": LedHandler(),
+        'description': 'bomba',
+        'port': 12341,
+        'handler': Pump(),
     },
-    {
-        "description": "red led",
-        "port": 12341,
-        "handler": RestApiHandler((255, 0, 0), 50),
-    },
+    # {
+    #     "description": "led",
+    #     "port": 12340,
+    #     "handler": LedHandler(),
+    # },
+    # {
+    #     "description": "red led",
+    #     "port": 12341,
+    #     "handler": RestApiHandler((255, 0, 0), 50),
+    # },
     # {
     #     "description": "blue led",
     #     "port": 12342,

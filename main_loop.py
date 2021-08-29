@@ -12,6 +12,7 @@ def thread_echo(args):
     while True:
         try:
             plumbing.control_water_level()
+            dbg('Bomba -> %s' % plumbing.pump_state())
             alexa.poller.poll(10)
             time.sleep(0.2)
             gc.collect()
