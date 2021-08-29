@@ -18,7 +18,7 @@
 # boot.py -- run on boot-up
 
 import json
-credentials = json.loads('ap_credentials.json')
+credentials = json.load(open('ap_credentials.json'))
 # wlan access
 SSID = credentials.get('ssid')
 WPA2_PASS = credentials.get('password')

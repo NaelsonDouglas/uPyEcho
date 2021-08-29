@@ -30,13 +30,13 @@ try:
     thread_available = True
 except:
     thread_available = False
+#from main_loop import thread_echo
 from app import App
 
-application = App()
-
+alexa = App()
 if thread_available:
     print("Starting echo serviceList on separated thread\n")
-    _thread.start_new_thread(application.thread_echo, ("",))
+    _thread.start_new_thread(alexa.thread_echo, ("",))
 else:
     print("Starting echo services\n")
-    application.thread_echo("")
+    alexa.thread_echo("")
