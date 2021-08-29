@@ -21,17 +21,23 @@ class InvalidPortException(Exception):
 
 class App:
     def __init__(self):
-        self.pooler = Pooler()
+        self.poller = Poller()
         self.upnp = UpnpBroadcastResponder()
         self.upnp.init_socket()
-        self.pooler.add(self.upnp)
+        self.poller.add(self.upnp)
 
         for device in devices:
             if not device.get('port'):
                 device['port'] = 0
             elif not isinstance(device['port'], int):
                 raise InvalidPortException('Invalid port of type: {}, with a value of: {}'.format(type(device['port']), device['port']))
-            Fauxmo(device['description'],u ,p, None, device['port'], action_handler=device['handler'])
+            Fauxmo(device['description'],
+                    self.upnp,
+                    self.poller,
+                    None,
+                    device['port'],
+                    action_handler=device['handler']
+                    )
 
 
     def thread_echo(self, args):
@@ -40,7 +46,7 @@ class App:
         while True:
             try:
                 # Allow time for a ctrl-c to stop the process
-                self.pooler.poll(10)
+                self.poller.poll(10)
                 time.sleep(0.1)
                 gc.collect()
             except Exception as e:
