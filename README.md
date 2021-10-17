@@ -1,4 +1,4 @@
-#Notes on this specific fork (NaelsonDouglas/uPyEcho)
+# Notes on this specific fork (NaelsonDouglas/uPyEcho)
 
 I fully refactored the code, now it works in a modular way using OO.
 There's still some work to do, after that I'll propose a Pull Request to @lemariva
